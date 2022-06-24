@@ -23,13 +23,33 @@ app.post("/newpost", async(req,res)=>{
 
 app.get("/posts", async(req, res) => {
     try {
-        const allPosts = await pool.query("SELECT * FROM post");
+        const allPosts = await pool.query("SELECT * FROM post ORDER BY post_id DESC");
         //we dont need to say returning * because we are already selecting all todos
         res.json(allPosts.rows);
     } catch(err){
         console.log(err);
     }
 })
+
+app.get("/comments/:id", async(req, res) => {
+    try {
+        const { id } = req.params;
+        const allComments = await pool.query("SELECT * FROM comments WHERE post_id = $1", [id]);
+        //we dont need to say returning * because we are already selecting all todos
+        res.json(allComments.rows);
+    } catch(err){
+        console.log(err);
+    }
+})
+
+app.post("/createcomment", async (req, res)=>{
+    try{
+        const newComment = await pool.query("INSERT INTO comments (commentdescription, post_id) VALUES($1, $2) RETURNING *", [req.body.description, req.body.post_id]);
+        res.json(newComment.rows); //?
+    } catch(err){
+        console.log(err);
+    }
+});
 
 //LISTENER
 app.listen(5000, () => {

@@ -9,8 +9,8 @@ const Post = ({post}) => {
           <div className="card-body">
             <h6>User</h6>
             <p className="card-text">{post.postdescription}</p>
-            <CreateComment />
-            <ListComments />
+            <CreateComment post_id={post.post_id}/>
+            <ListComments post_id={post.post_id}/>
           </div>
         </div>
     )

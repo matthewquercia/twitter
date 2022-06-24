@@ -14,8 +14,7 @@ class CreatePost extends React.Component{
     }
 
     hideNewPost = () => {
-        this.setState({newPost: false});
-        this.setState({description: ""});
+        this.setState({description: "", newPost: false});
     }
 
     updateDescription = (val) => {
@@ -24,13 +23,15 @@ class CreatePost extends React.Component{
 
     createNewPost = async (e) => {
         e.preventDefault();
+        //ensure the size of the post is less than the required size for the database column
+        const concatenated = this.state.description.slice(0,250);
         try {
-            const body = this.state.description;
+            //const body = this.state.description;
             //need to use async await so that the fetch can go through
             const response = await fetch("http://localhost:5000/newpost", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({description: this.state.description})
+                body: JSON.stringify({description: concatenated})
             });
             //this will refresh and show the changes once the response has consent
             window.location = "/";
