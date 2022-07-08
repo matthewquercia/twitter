@@ -3,7 +3,7 @@ import React, {Fragment, useState} from 'react';
 class CreateComment extends React.Component{
     constructor(props){
         super(props);
-        this.state= {
+        this.state = {
             inputFieldSelected: false,
             description: ""
         }
@@ -53,7 +53,7 @@ class CreateComment extends React.Component{
 
         return(
             <div className="input-group input-group-sm mb-3">
-                <input type="text" className="form-control" placeholder="Add a comment..."  value={this.state.description} onFocus={(e) => this.showCommentCancelButtons()} onChange={e => this.updateDescription(e.target.value)}/>
+                <input type="text" className="form-control" placeholder="Add a comment..." value={this.state.description} onFocus={(e) => this.showCommentCancelButtons()} onChange={e => this.updateDescription(e.target.value)}/>
                 {commentButtons}
             </div>
         )

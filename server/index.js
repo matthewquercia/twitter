@@ -3,6 +3,7 @@ const cors = require('cors');
 
 //pull in the connection to the database which will allow us to connect to the db
 const pool = require('./db_connection');
+const hasher = require('./bcrypter');
 
 //create instance of express
 const app = express();
@@ -18,6 +19,7 @@ app.post("/newpost", async(req,res)=>{
         res.json(newPost.rows);
     } catch (err) {
         console.log(err);
+        res.status(500).send();
     }
 });
 
@@ -28,6 +30,7 @@ app.get("/posts", async(req, res) => {
         res.json(allPosts.rows);
     } catch(err){
         console.log(err);
+        res.status(500).send();
     }
 })
 
@@ -39,6 +42,7 @@ app.get("/comments/:id", async(req, res) => {
         res.json(allComments.rows);
     } catch(err){
         console.log(err);
+        res.status(500).send();
     }
 })
 
@@ -48,6 +52,18 @@ app.post("/createcomment", async (req, res)=>{
         res.json(newComment.rows); //?
     } catch(err){
         console.log(err);
+        res.status(500).send();
+    }
+});
+
+app.post("/createuser", async (req, res)=>{
+    try {
+        const pass = await hasher.hashUsersPassword(req.body.password);
+        const newUser = await pool.query("INSERT INTO users (username, password) VALUES($1, $2) RETURNING *", [req.body.username, pass]);
+        res.json(newUser.rows); //?
+    } catch(err){
+        console.log(err);
+        res.status(500).send();
     }
 });
 
