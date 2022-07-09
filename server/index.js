@@ -67,6 +67,27 @@ app.post("/createuser", async (req, res)=>{
     }
 });
 
+app.get("/loginuser/:user/:pass", async (req, res) => {
+    try {
+        const userExists = await pool.query("SELECT username, password FROM users WHERE username = $1", [req.params.user]);
+        if(userExists){
+            const validate = await hasher.validateUsersPassword(req.params.pass, userExists.rows[0].password);
+            if(validate){
+                console.log("YOU ARE NOW LOGGED IN!")
+                res.status(200).send();
+            } else {
+                console.log("WRONG PASSWORD")
+                res.status(400).send();
+            }
+        } else {
+            res.status(400).send();
+        }
+    } catch(err){
+        console.log(err);
+        res.status(500).send();
+    }
+})
+
 //LISTENER
 app.listen(5000, () => {
     console.log("Listening on port 5000");

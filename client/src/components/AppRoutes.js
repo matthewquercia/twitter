@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from './LandingPage';
 import SignUp from './SignUp';
 import Navbar from './Navbar';
+import Login from './Login';
 
 const AppRoutes = () => {
     return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/signup" element={<SignUp />} />
+                        <Route path="/login" element={<Login />} />
                     </Routes>
                 </BrowserRouter>
             </div>
